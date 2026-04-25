@@ -1,0 +1,39 @@
+Problem 1: Partition Equal Subset Sum
+LeetCode: #416 — https://leetcode.com/problems/partition-equal-subset-sum/
+Difficulty: Medium — Topic: 0/1 Knapsack, Subset Sum
+Description
+Given array nums, return true if you can partition it into two equal-sum subsets.
+Examples
+Input: [1,5,11,5] → Output: true (partitions: [1,5,5] and [11])
+Input: [1,2,3,5] → Output: false
+Hint
+If total sum is odd → impossible. Find subset with sum = total/2.
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {        
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            sum += nums[i];
+        }
+        if(sum%2 == 1) return false;
+
+        int target = sum/2;
+        vector<bool> dp(target + 1, false);
+        dp[0] = true;
+        
+        // DP part 
+        for(int num : nums)
+        {
+            for(int j = target; j >= num; j--) 
+            {
+                dp[j] = dp[j] || dp[j - num]; 
+            }
+            if(dp[target]) return true;
+        }
+
+        return dp[target];
+
+    }
+};
